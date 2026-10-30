@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>30-Day To-Do Schedule</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+    }
+    .days {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+      margin: 20px;
+    }
+    .day-btn {
+      padding: 10px;
+      background-color: #333;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    .day-btn.active {
+      background-color: red;
+    }
+    .schedule {
+      margin-top: 20px;
+      text-align: left;
+      display: inline-block;
+      background-color: #222;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+    }
+    .schedule h2 {
+      color: red;
+      text-align: center;
+    }
+    .task {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #333;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+    }
+    .task input {
+      margin-right: 10px;
+    }
+    /* Progress bar styling */
+    .progress-container {
+      width: 80%;
+      background-color: #333;
+      border-radius: 10px;
+      margin: 20px auto;
+      height: 25px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #2ecc71;
+      text-align: center;
+      line-height: 25px;
+      color: white;
+      transition: width 0.3s;
+    }
+    /* Motivational line styling */
+    .motivation {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 15px;
+      background: linear-gradient(to right, red, purple, black);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body>
+  <!-- Motivational line -->
+  <div class="motivation" id="motivation">“Stay consistent, success will follow.”</div>
+  
+  <div class="days" id="days"></div>
+  
+  <!-- Monthly Progress bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar">0%</div>
+  </div>
+  
+  <div class="schedule" id="schedule">
+    <h2>Executing Day 1</h2>
+    <!-- Morning -->
+    <div class="task"><input type="checkbox"> 6:00 AM – 7:00 AM ICE-1201</div>
+    <div class="task"><input type="checkbox"> 7:00 AM – 8:00 AM ICE-1203</div>
+    <!-- Break -->
+    <div class="task"><input type="checkbox"> 8:00 AM – 6:00 PM Break</div>
+    <!-- Evening -->
+    <div class="task"><input type="checkbox"> 6:00 PM – 7:00 PM EEE-1201</div>
+    <div class="task"><input type="checkbox"> 7:00 PM – 8:00 PM MATH-1201</div>
+    <div class="task"><input type="checkbox"> 8:00 PM – 9:00 PM ENGLISH-1201</div>
+    <!-- Night -->
+    <div class="task"><input type="checkbox"> 9:00 PM – 10:00 PM Web Development</div>
+    <div class="task"><input type="checkbox"> 10:00 PM – 11:00 PM C++ Programming</div>
+    <div class="task"><input type="checkbox"> 11:00 PM – 12:00 AM Java Programming</div>
+    <div class="task"><input type="checkbox"> 12:00 AM – 1:00 AM Competitive Programming</div>
+  </div>
+
+  <script>
+    const daysContainer = document.getElementById("days");
+    const schedule = document.getElementById("schedule");
+    const progressBar = document.getElementById("progress-bar");
+    const motivation = document.getElementById("motivation");
+
+    let totalTasks = 0;
+    let completedTasks = 0;
+
+    const motivationalLines = [
+      "“Stay consistent, success will follow.”",
+      "“Small steps every day build big results.”",
+      "“Discipline beats motivation.”",
+      "“Your effort today is your strength tomorrow.”",
+      "“Keep pushing, greatness takes time.”",
+      "“Focus on progress, not perfection.”",
+      "“Every hour invested brings you closer.”",
+      "“Believe in yourself and keep coding.”",
+      "“Challenges are opportunities in disguise.”",
+      "“Persistence turns dreams into reality.”"
+    ];
+
+    // Function to update monthly progress bar
+    function updateProgress() {
+      const percent = Math.round((completedTasks / totalTasks) * 100);
+      progressBar.style.width = percent + "%";
+      progressBar.textContent = percent + "%";
+    }
+
+    // Attach event listener to checkboxes
+    function attachCheckboxListeners() {
+      const checkboxes = schedule.querySelectorAll("input[type='checkbox']");
+      totalTasks += checkboxes.length;
+      checkboxes.forEach(cb => {
+        cb.addEventListener("change", () => {
+          if (cb.checked) {
+            completedTasks++;
+          } else {
+            completedTasks--;
+          }
+          updateProgress();
+        });
+      });
+    }
+
+    // Create 30 day buttons
+    for (let i = 1; i <= 30; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = "D" + i;
+      btn.className = "day-btn";
+      if (i === 1) btn.classList.add("active");
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".day-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        schedule.innerHTML = `
+          <h2>Executing Day ${i}</h2>
+          <div class="task"><input type="checkbox"> 6:00 AM – 7:00 AM ICE-1201</div>
+          <div class="task"><input type="checkbox"> 7:00 AM – 8:00 AM ICE-1203</div>
+          <div class="task"><input type="checkbox"> 8:00 AM – 6:00 PM Break</div>
+          <div class="task"><input type="checkbox"> 6:00 PM – 7:00 PM EEE-1201</div>
+          <div class="task"><input type="checkbox"> 7:00 PM – 8:00 PM MATH-1201</div>
+          <div class="task"><input type="checkbox"> 8:00 PM – 9:00 PM ENGLISH-1201</div>
+          <div class="task"><input type="checkbox"> 9:00 PM – 10:00 PM Web Development</div>
+          <div class="task"><input type="checkbox"> 10:00 PM – 11:00 PM C++ Programming</div>
+          <div class="task"><input type="checkbox"> 11:00 PM – 12:00 AM Java Programming</div>
+          <div class="task"><input type="checkbox"> 12:00 AM – 1:00 AM Competitive Programming</div>
+        `;
+        attachCheckboxListeners();
+        motivation.textContent = motivationalLines[(i - 1) % motivationalLines.length];
+      });
+      daysContainer.appendChild(btn);
+    }
+
+    // Initialize listeners for Day 1
+    attachCheckboxListeners();
+  </script>
+</body>
+</html>
